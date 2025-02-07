@@ -1,18 +1,20 @@
-CREATE DATABASE financeiro_easytrack;
+-- Criar o banco de dados
+CREATE DATABASE IF NOT EXISTS financeiro_easytrack;
 USE financeiro_easytrack;
 
-CREATE TABLE categorias (
+-- Criar a tabela de categorias
+CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL
+    nome VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE transacoes (
+-- Criar a tabela de transações
+CREATE TABLE IF NOT EXISTS transacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
+    tipo ENUM('receita', 'despesa') NOT NULL,
+    categoria_id INT NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
-    tipo ENUM('entrada', 'saida') NOT NULL,
-    categoria_id INT,
+    descricao TEXT,
     data_transacao DATE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
 );
